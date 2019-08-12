@@ -1,0 +1,78 @@
+version: '3.1'
+
+services:
+  zoo1:
+    image: openjdk:8u222-jre
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+      - 8081:8080
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=172.16.101.11:2888:3888,172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888,172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888,172.16.102.33:2888:3888;2181
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
+    networks:
+      net_1:
+        ipv4_address: 172.16.101.11
+      net_2:
+        ipv4_address: 172.16.102.11
+
+  zoo2:
+    image: openjdk:8u222-jre
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+      - 8082:8080
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=172.16.101.11:2888:3888,172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888,172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888,172.16.102.33:2888:3888;2181
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
+    networks:
+      net_1:
+        ipv4_address: 172.16.101.22
+      net_2:
+        ipv4_address: 172.16.102.22
+
+  zoo3:
+    image: openjdk:8u222-jre
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+      - 8083:8080
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=172.16.101.11:2888:3888,172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888,172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888,172.16.102.33:2888:3888;2181
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
+    networks:
+      net_1:
+        ipv4_address: 172.16.101.33
+      net_2:
+        ipv4_address: 172.16.102.33
+
+
+networks:
+  net_1:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.101.0/24"
+  net_2:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.102.0/24"
