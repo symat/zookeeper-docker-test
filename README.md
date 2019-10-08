@@ -6,7 +6,7 @@ The current implementation will extract and use the `zookeeper-assembly/target/*
 repository when starting the container.
 
 
-## using different cluster setups
+## Using different cluster setups
 
 The clusters are specified in compose files. You can customize them, these are the ones I created:
 - `3_nodes_zk.yml`: three zookeeper nodes, using a single virtual network
@@ -14,8 +14,8 @@ The clusters are specified in compose files. You can customize them, these are t
 - `4_nodes_2_networks_zk.yml`: four zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
-- REST api port: 808<X> (e.g. for server 1 use: http://localhost:8081/commands/leader)
-- Client port: 218<X> (e.g. for server 3 use: localhost:2183)
+- REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
+- Client port: 218(X) (e.g. for server 3 use: localhost:2183)
 
 ## Starting the docker cluster:
 
