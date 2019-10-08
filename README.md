@@ -55,10 +55,13 @@ f1702d83721c        openjdk:8u222-jre   "/bin/bash /scripts/…"   About a minut
 15dea744231d        openjdk:8u222-jre   "/bin/bash /scripts/…"   About a minute ago   Up About a minute   0.0.0.0:2182->2181/tcp, 0.0.0.0:8082->8080/tcp   zookeeper_zoo2_1
 
 
-# connect to node 1:
+# connect to server 1:
 docker exec -it zookeeper_zoo1_1 /bin/bash
 
 root@zoo1:/# cd /zookeeper/bin/
 root@zoo1:/zookeeper/bin# ./zkCli.sh
+
+# or to start the zookeeper client on server 2 using a single command:
+docker exec -it zookeeper_zoo1_1 /bin/bash /zookeeper/bin/zkCli.sh
 ```
 
