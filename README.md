@@ -37,6 +37,7 @@ docker-compose --file 3_nodes_zk.yml --project-name zookeeper up
 ## Playing with the virtual networks
 - list networks: `docker network ls`
 - disconnect a container from network: `docker network disconnect zookeeper_net_1 zookeeper_zoo3_1`
+- reconnect the same container later: `docker network connect zookeeper_net_1 zookeeper_zoo3_1`
 
 
 ## Stopping the docker cluster:
