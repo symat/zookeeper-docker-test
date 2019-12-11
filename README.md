@@ -36,8 +36,8 @@ docker-compose --file 3_nodes_zk.yml --project-name zookeeper up
 
 ## Playing with the virtual networks
 - list networks: `docker network ls`
-- disconnect a container from network: `docker network disconnect zookeeper_net_1 zookeeper_zoo3_1`
-- reconnect the same container later: `docker network connect zookeeper_net_1 zookeeper_zoo3_1`
+- disconnect the 3rd container from network 1: `docker network disconnect zookeeper_net_1 zookeeper_zoo3_1`
+- reconnect the same container later with the same IP: `docker network connect --ip 172.16.101.33 zookeeper_net_1 zookeeper_zoo3_1`
 
 
 ## Stopping the docker cluster:
@@ -66,3 +66,6 @@ root@zoo1:/zookeeper/bin# ./zkCli.sh
 docker exec -it zookeeper_zoo1_1 /bin/bash /zookeeper/bin/zkCli.sh
 ```
 
+## Logging
+
+The containers will log with INFO threshold to the console and DEBUG logs will be produced into log files under the `logs` folder. You can change the log levels in the `start_zookeeper.sh` file.

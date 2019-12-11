@@ -20,6 +20,9 @@ done
 
 export ZOO_LOG_DIR=/scripts/logs/$ZOO_MY_ID
 mkdir -p $ZOO_LOG_DIR
+rm -f $ZOO_LOG_DIR/*.log
+export ZOO_LOG4J_PROP="DEBUG,CONSOLE,ROLLINGFILE"
+export SERVER_JVMFLAGS="-Dzookeeper.log.threshold=DEBUG -Dzookeeper.console.threshold=INFO"
 
 echo "========= /data/myid ========="
 cat /data/myid
