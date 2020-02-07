@@ -38,7 +38,8 @@ docker-compose --file 3_nodes_zk.yml --project-name zookeeper up
 - list networks: `docker network ls`
 - disconnect the 3rd container from network 1: `docker network disconnect zookeeper_net_1 zookeeper_zoo3_1`
 - reconnect the same container later with the same IP: `docker network connect --ip 172.16.101.33 zookeeper_net_1 zookeeper_zoo3_1`
-
+- restarting a single ZooKeeper server: `docker-compose --file 3_nodes_zk.yml --project-name zookeeper restart zoo2`
+- use 4lw command 'stat' on the second ZK server (given it's ZK port is exposed on the port 2182 of the host machine): `echo "stat" | nc localhost 2182`
 
 ## Stopping the docker cluster:
 - first press ctrl-C on the shell where the zookeeper cluster is running
