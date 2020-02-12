@@ -13,6 +13,7 @@ services:
     environment:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=172.16.101.11:2888:3888|172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888|172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888|172.16.102.33:2888:3888;2181
+      EXTRA_SERVER_JVM_FLAGS: "-Dzookeeper.multiAddress.enabled=true "
     volumes:
       - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
       - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
@@ -34,6 +35,7 @@ services:
     environment:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1=172.16.101.11:2888:3888|172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888|172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888|172.16.102.33:2888:3888;2181
+      EXTRA_SERVER_JVM_FLAGS: "-Dzookeeper.multiAddress.enabled=true "
     volumes:
       - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
       - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
@@ -55,6 +57,7 @@ services:
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=172.16.101.11:2888:3888|172.16.102.11:2888:3888;2181 server.2=172.16.101.22:2888:3888|172.16.102.22:2888:3888;2181 server.3=172.16.101.33:2888:3888|172.16.102.33:2888:3888;2181
+      EXTRA_SERVER_JVM_FLAGS: "-Dzookeeper.multiAddress.enabled=true "
     volumes:
       - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
       - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
