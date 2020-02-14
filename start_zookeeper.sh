@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CUSTOM_ZOO_CFG=${CUSTOM_ZOO_CFG:-/scripts/conf/zoo.cfg}
+
 mkdir /zookeeper
 tar xzf /zookeeper_src/zookeeper-assembly/target/*-bin.tar.gz --directory /zookeeper --strip-components=1
 
@@ -13,7 +15,7 @@ fi
 mkdir -p /datalog /data /conf
 echo "$ZOO_MY_ID" > /data/myid
 
-cp /scripts/conf/zoo.cfg /zookeeper/conf/
+cp $CUSTOM_ZOO_CFG /zookeeper/conf/zoo.cfg
 for server in $ZOO_SERVERS; do
     echo "$server" >> /zookeeper/conf/zoo.cfg
 done

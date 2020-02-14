@@ -12,6 +12,7 @@ The clusters are specified in compose files. You can customize them, these are t
 - `3_nodes_zk.yml`: three zookeeper nodes, using a single virtual network
 - `3_nodes_2_networks_zk.yml`: three zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
 - `4_nodes_2_networks_zk.yml`: four zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
+- `3_nodes_digets_quorum_auth_zk.yml`: three zookeeper nodes, using a single virtual network and digest SASL authentication
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
@@ -30,7 +31,7 @@ cd $ZOOKEEPER_GIT_REPO
 mvn clean install -DskipTests
 
 cd $ZOOKEEPER_DOCKER_TEST_GIT_REPO
-docker-compose --file 3_nodes_zk.yml --project-name zookeeper up
+docker-compose --project-name zookeeper --file 3_nodes_zk.yml up
 
 ```
 
@@ -65,6 +66,13 @@ root@zoo1:/zookeeper/bin# ./zkCli.sh
 
 # or to start the zookeeper client on server 2 using a single command:
 docker exec -it zookeeper_zoo1_1 /bin/bash /zookeeper/bin/zkCli.sh
+```
+
+
+## Connecting to a running zookeeper node with digest authentication 
+Assuming you used `3_nodes_digest_quorum_auth.yml` to start your cluster, you can start a cli by:
+```
+docker exec -e CLIENT_JVMFLAGS="-Djava.security.auth.login.config=/scripts/conf/digest_jaas_client.conf" -it zookeeper_zoo1_1 /bin/bash /zookeeper/bin/zkCli.sh
 ```
 
 ## Logging
