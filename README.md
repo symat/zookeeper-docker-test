@@ -13,6 +13,7 @@ The clusters are specified in compose files. You can customize them, these are t
 - `3_nodes_2_networks_zk.yml`: three zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
 - `4_nodes_2_networks_zk.yml`: four zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
 - `3_nodes_digets_quorum_auth_zk.yml`: three zookeeper nodes, using a single virtual network and digest SASL authentication
+- `3_nodes_zk_no_wildcard_addr.yml`: three zookeeper nodes, having proper hosts in the server configs (not using 0.0.0.0 anywhere)
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
