@@ -79,3 +79,8 @@ docker exec -e CLIENT_JVMFLAGS="-Djava.security.auth.login.config=/scripts/conf/
 ## Logging
 
 The containers will log with INFO threshold to the console and DEBUG logs will be produced into log files under the `logs` folder. You can change the log levels in the `start_zookeeper.sh` file.
+
+
+## License
+
+Good old Apache License 2.0
