@@ -1,0 +1,53 @@
+version: '3.1'
+
+services:
+  zoo1:
+    image: openjdk:12.0.2
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+      - 8081:8080
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      CUSTOM_ZOO_CFG: "/scripts/conf/ZOOKEEPER-3769_zoo.cfg"
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
+
+  zoo2:
+    image: openjdk:12.0.2
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+      - 8082:8080
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      CUSTOM_ZOO_CFG: "/scripts/conf/ZOOKEEPER-3769_zoo.cfg"
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"
+
+  zoo3:
+    image: openjdk:12.0.2
+    entrypoint: "/bin/bash"
+    command: "/scripts/start_zookeeper.sh"
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+      - 8083:8080
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+      CUSTOM_ZOO_CFG: "/scripts/conf/ZOOKEEPER-3769_zoo.cfg"
+    volumes:
+      - "${ZOOKEEPER_GIT_REPO}:/zookeeper_src"
+      - "${ZOOKEEPER_DOCKER_TEST_GIT_REPO}:/scripts"

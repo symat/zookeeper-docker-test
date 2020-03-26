@@ -14,6 +14,7 @@ The clusters are specified in compose files. You can customize them, these are t
 - `4_nodes_2_networks_zk.yml`: four zookeeper nodes, using two virtual networks (created for testing [ZOOKEEPER-3188](https://issues.apache.org/jira/browse/ZOOKEEPER-3188))
 - `3_nodes_digets_quorum_auth_zk.yml`: three zookeeper nodes, using a single virtual network and digest SASL authentication
 - `3_nodes_zk_no_wildcard_addr.yml`: three zookeeper nodes, having proper hosts in the server configs (not using 0.0.0.0 anywhere)
+- `3_nodes_zk_jdk_12.yml`: three zookeeper nodes on OpenJDK 12.0.2 (to reproduce issue in [ZOOKEEPER-3769](https://issues.apache.org/jira/browse/ZOOKEEPER-3769))
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
@@ -36,11 +37,14 @@ docker-compose --project-name zookeeper --file 3_nodes_zk.yml up
 
 ```
 
-## Playing with the virtual networks
+## Playing with the virtual networks / nodes
+While the cluster is running, you can use the following commands on a different shell:
 - list networks: `docker network ls`
 - disconnect the 3rd container from network 1: `docker network disconnect zookeeper_net_1 zookeeper_zoo3_1`
 - reconnect the same container later with the same IP: `docker network connect --ip 172.16.101.33 zookeeper_net_1 zookeeper_zoo3_1`
 - restarting a single ZooKeeper server: `docker-compose --file 3_nodes_zk.yml --project-name zookeeper restart zoo2`
+- stopping a single ZooKeeper server: `docker-compose --file 3_nodes_zk.yml --project-name zookeeper stop zoo3`
+- starting a single ZooKeeper server: `docker-compose --file 3_nodes_zk.yml --project-name zookeeper start zoo3`
 - use 4lw command 'stat' on the second ZK server (given it's ZK port is exposed on the port 2182 of the host machine): `echo "stat" | nc localhost 2182`
 
 ## Stopping the docker cluster:
