@@ -15,6 +15,7 @@ The clusters are specified in compose files. You can customize them, these are t
 - `3_nodes_digets_quorum_auth_zk.yml`: three zookeeper nodes, using a single virtual network and digest SASL authentication
 - `3_nodes_zk_no_wildcard_addr.yml`: three zookeeper nodes, having proper hosts in the server configs (not using 0.0.0.0 anywhere)
 - `3_nodes_zk_jdk_12.yml`: three zookeeper nodes on OpenJDK 12.0.2 (to reproduce issue in [ZOOKEEPER-3769](https://issues.apache.org/jira/browse/ZOOKEEPER-3769))
+- `3_nodes_zk_dynamic_config.yml`: three zookeeper nodes using separate dynamic config file supported in 3.6.0+ (to reproduce issue in [ZOOKEEPER-3776](https://issues.apache.org/jira/browse/ZOOKEEPER-3776))
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)

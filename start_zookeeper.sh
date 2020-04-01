@@ -16,8 +16,10 @@ mkdir -p /datalog /data /conf
 echo "$ZOO_MY_ID" > /data/myid
 
 cp $CUSTOM_ZOO_CFG /zookeeper/conf/zoo.cfg
+
+DYNAMIC_SERVER_INFO_FILE=${DYNAMIC_SERVER_INFO_FILE:-/zookeeper/conf/zoo.cfg}
 for server in $ZOO_SERVERS; do
-    echo "$server" >> /zookeeper/conf/zoo.cfg
+    echo "$server" >> $DYNAMIC_SERVER_INFO_FILE
 done
 
 export ZOO_LOG_DIR=/scripts/logs/$ZOO_MY_ID
@@ -30,6 +32,13 @@ echo "========= /data/myid ========="
 cat /data/myid
 echo "========= /conf/zoo.cfg ========="
 cat /zookeeper/conf/zoo.cfg
+
+if [ "$DYNAMIC_SERVER_INFO_FILE" == "/zookeeper/conf/zoo.cfg" ]; then
+    echo "========= dynamic config file: N/A ========="
+else
+    echo "========= dynamic config file: $DYNAMIC_SERVER_INFO_FILE ========="
+    cat $DYNAMIC_SERVER_INFO_FILE
+fi
 echo "========= java version ========="
 java -version
 echo "==========================="
