@@ -13,11 +13,28 @@ if [[ -z $ZOO_SERVERS ]]; then
 fi
 
 mkdir -p /datalog /data /conf
+
+ZOO_CFG_PATH=/zookeeper/conf/zoo.cfg
+
+if [ "x$CUSTOM_DATA_FOLDER" = "x" ] ; then
+  mkdir -p /datalog /data
+else
+  mkdir -p $CUSTOM_DATA_FOLDER/datalog
+  mkdir -p $CUSTOM_DATA_FOLDER/data
+  rm -f $CUSTOM_DATA_FOLDER/zoo.cfg
+  ZOO_CFG_PATH=$CUSTOM_DATA_FOLDER/zoo.cfg
+  rm -fR /datalog
+  rm -fR /data
+  ln -s $CUSTOM_DATA_FOLDER/datalog /datalog
+  ln -s $CUSTOM_DATA_FOLDER/data /data
+fi
+
+mkdir -p  /conf
 echo "$ZOO_MY_ID" > /data/myid
 
-cp $CUSTOM_ZOO_CFG /zookeeper/conf/zoo.cfg
+cp $CUSTOM_ZOO_CFG $ZOO_CFG_PATH
 
-DYNAMIC_SERVER_INFO_FILE=${DYNAMIC_SERVER_INFO_FILE:-/zookeeper/conf/zoo.cfg}
+DYNAMIC_SERVER_INFO_FILE=${DYNAMIC_SERVER_INFO_FILE:-$ZOO_CFG_PATH}
 for server in $ZOO_SERVERS; do
     echo "$server" >> $DYNAMIC_SERVER_INFO_FILE
 done
@@ -30,10 +47,10 @@ export SERVER_JVMFLAGS="$EXTRA_SERVER_JVM_FLAGS -Dzookeeper.log.threshold=DEBUG 
 
 echo "========= /data/myid ========="
 cat /data/myid
-echo "========= /conf/zoo.cfg ========="
-cat /zookeeper/conf/zoo.cfg
+echo "========= zoo.cfg: $ZOO_CFG_PATH ========="
+cat $ZOO_CFG_PATH
 
-if [ "$DYNAMIC_SERVER_INFO_FILE" == "/zookeeper/conf/zoo.cfg" ]; then
+if [ "$DYNAMIC_SERVER_INFO_FILE" == "$ZOO_CFG_PATH" ]; then
     echo "========= dynamic config file: N/A ========="
 else
     echo "========= dynamic config file: $DYNAMIC_SERVER_INFO_FILE ========="
@@ -44,4 +61,4 @@ java -version
 echo "==========================="
 
 cd /zookeeper/bin
-./zkServer.sh start-foreground 2>&1
+./zkServer.sh start-foreground $ZOO_CFG_PATH 2>&1

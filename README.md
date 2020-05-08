@@ -16,6 +16,11 @@ The clusters are specified in compose files. You can customize them, these are t
 - `3_nodes_zk_no_wildcard_addr.yml`: three zookeeper nodes, having proper hosts in the server configs (not using 0.0.0.0 anywhere)
 - `3_nodes_zk_jdk_12.yml`: three zookeeper nodes on OpenJDK 12.0.2 (to reproduce issue in [ZOOKEEPER-3769](https://issues.apache.org/jira/browse/ZOOKEEPER-3769))
 - `3_nodes_zk_dynamic_config.yml`: three zookeeper nodes using separate dynamic config file supported in 3.6.0+ (to reproduce issue in [ZOOKEEPER-3776](https://issues.apache.org/jira/browse/ZOOKEEPER-3776))
+- `3_nodes_zk_mounted_data_folder.yml`: three zookeeper nodes storing all their config and data in a mounted volume
+
+To simulate the case of changing a hostname of a server without using dynamic reconfig ([ZOOKEEPER-3814](https://issues.apache.org/jira/browse/ZOOKEEPER-3814)):
+- start first `3_nodes_zk_mounted_data_folder.yml`, then stop it
+- then start `3_nodes_zk_server_hostname_changed.yml`
 
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
