@@ -18,10 +18,6 @@ The clusters are specified in compose files. You can customize them, these are t
 - `3_nodes_zk_dynamic_config.yml`: three zookeeper nodes using separate dynamic config file supported in 3.6.0+ (to reproduce issue in [ZOOKEEPER-3776](https://issues.apache.org/jira/browse/ZOOKEEPER-3776))
 - `3_nodes_zk_mounted_data_folder.yml`: three zookeeper nodes storing all their config and data in a mounted volume
 
-To simulate the case of changing a hostname of a server without using dynamic reconfig ([ZOOKEEPER-3814](https://issues.apache.org/jira/browse/ZOOKEEPER-3814)):
-- start first `3_nodes_zk_mounted_data_folder.yml`, then stop it
-- then start `3_nodes_zk_server_hostname_changed.yml`
-
 Some ports are also exposed on localhost, so you can connect to your cluster. My port configs (for server X):
 - REST api port: 808(X) (e.g. for server 1 use: http://localhost:8081/commands/leader)
 - Client port: 218(X) (e.g. for server 3 use: localhost:2183)
@@ -31,7 +27,7 @@ Some ports are also exposed on localhost, so you can connect to your cluster. My
 ```
 # the docker containers will mount both the zookeeper source code folder
 # and the folder of the docker helper scripts, we need to define these folders first
-export ZOOKEEPER_GIT_REPO=~/git/zookeeper
+export ZOOKEEPER_GIT_REPO=~/git/zookeeper-apache
 export ZOOKEEPER_DOCKER_TEST_GIT_REPO=~/git/zookeeper-docker-test
 
 # you always need to do a maven install to have the assembly tar.gz file updated!
@@ -57,6 +53,19 @@ While the cluster is running, you can use the following commands on a different 
 - first press ctrl-C on the shell where the zookeeper cluster is running
 - then remove the networks / leftovers: `docker-compose --file 3_nodes_zk.yml --project-name zookeeper down`
 
+## Simulating rolling restarts with different config
+
+To simulate the case of changing a hostname of a server with rolling restarts (without using dynamic reconfig, [ZOOKEEPER-3814](https://issues.apache.org/jira/browse/ZOOKEEPER-3814)):
+- clean the `data` folder
+- start first all the 3 nodes of `3_nodes_zk_mounted_data_folder.yml`
+- then perform rolling restart by stopping nodes of `3_nodes_zk_mounted_data_folder.yml` and starting nodes of `3_nodes_zk_server_hostname_changed.yml`
+
+Similarly, to expand a cluster with rolling restart ([ZOOKEEPER-3829](https://issues.apache.org/jira/browse/ZOOKEEPER-3829)):
+- clean the `data` folder
+- start first all the 3 nodes of `3_nodes_zk_mounted_data_folder.yml`
+- then perform rolling restart by stopping nodes of `3_nodes_zk_mounted_data_folder.yml` and starting nodes of `4_nodes_zk_mounted_data_folder.yml`
+
+In all rolling restart case, use docker-compose `stop` to terminate the old instances and use `up` to bring up the instances with new config.
 
 ## Connecting to a running zookeeper node (e.g. to start a client)
 ```
